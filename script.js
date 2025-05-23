@@ -1,10 +1,31 @@
 function translate(hebrewCitation) {
-  const match = hebrewCitation.match(/<ref>{{קישור כללי\|([\s\S]+?)}}<\/ref>/);
+  const match = extractCitationContent(hebrewCitation);
   if (!match) return 'Invalid citation format.';
 
-  const content = match[1];
+  const templateType = match.templateType;
+  const content = match.content;
+  const hasRefTags = match.hasRefTags;
 
-  // Split by | outside of {{...}}
+  const values = splitTemplateParams(content);
+  const citationBody = buildCitation(templateType, values);
+  if (!citationBody) return `Unsupported citation type: {{${templateType}}}`;
+
+  return hasRefTags ? `<ref>${citationBody}</ref>` : citationBody;
+}
+
+function extractCitationContent(text) {
+  const withRef = text.match(/^<ref>{{([^|]+)\|([\s\S]+?)}}<\/ref>$/);
+  const withoutRef = text.match(/^{{([^|]+)\|([\s\S]+?)}}$/);
+
+  if (withRef) {
+    return { templateType: withRef[1], content: withRef[2], hasRefTags: true };
+  } else if (withoutRef) {
+    return { templateType: withoutRef[1], content: withoutRef[2], hasRefTags: false };
+  }
+  return null;
+}
+
+function splitTemplateParams(content) {
   const parts = [];
   let current = '';
   let braceDepth = 0;
@@ -29,27 +50,78 @@ function translate(hebrewCitation) {
     }
   }
   if (current) parts.push(current.trim());
+  const named = {};
+  const unnamed = [];
 
-  // Convert to hash table
-  const values = {};
-  parts.forEach(part => {
-    const [key, ...valParts] = part.split('=');
-    if (key && valParts.length) {
-      values[key.trim()] = valParts.join('=').trim();
+  parts.forEach((part) => {
+    const eqIndex = part.indexOf('=');
+    if (eqIndex !== -1) {
+      const key = part.slice(0, eqIndex).trim();
+      const value = part.slice(eqIndex + 1).trim();
+      named[key] = value;
+    } else {
+      unnamed.push(part);
     }
   });
-
-  // Map Hebrew keys to English citation fields
-  const citation = `<ref>{{Cite web` +
-    (values['כותרת'] ? ` |title=${values['כותרת']}` : '') +
-    (values['כתובת'] ? ` |url=${values['כתובת']}` : '') +
-    (values['תאריך_וידוא'] ? ` |access-date=${values['תאריך_וידוא']}` : '') +
-    (values['אתר'] ? ` |website=${values['אתר']}` : '') +
-    (values['שפה'] ? ` |language=${values['שפה']}` : '') +
-    `}}</ref>`;
-
-  return citation;
+  return { named, unnamed };
 }
+
+
+function buildCitation(templateType, values) {
+  const { named, unnamed } = values;
+
+  switch (templateType) {
+    case 'קישור כללי':
+      return `{{Cite web` +
+        (named['כותרת'] ? ` |title=${named['כותרת']}` : '') +
+        (named['כתובת'] ? ` |url=${named['כתובת']}` : '') +
+        (named['תאריך_וידוא'] ? ` |access-date=${named['תאריך_וידוא']}` : '') +
+        (named['אתר'] ? ` |website=${named['אתר']}` : '') +
+        (named['שפה'] ? ` |language=${named['שפה']}` : '') +
+        `}}`;
+
+    case 'הערה': {
+      // Handle nested templates like {{כלכליסט|...}}
+      const nested = unnamed[0];
+      const nestedTemplateMatch = nested.match(/^{{כלכליסט\|([\s\S]+)}}$/);
+      if (nestedTemplateMatch) {
+        const { named: named_parts, unnamed: unnamed_parts } = splitTemplateParams(nestedTemplateMatch[1]);
+        const [author, title, articleId, date] = unnamed_parts;
+        const url = `https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`;
+        return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=Calcalist |language=he}}`;
+      }
+      return nested; // fallback if not matching nested format
+    }
+
+    default:
+      return null;
+  }
+}
+
+function translateHebrewMonth(dateString) {
+  // Lookup table for Hebrew month names to English
+  const monthLookup = {
+    'ינואר': 'January',
+    'פברואר': 'February',
+    'מרץ': 'March',
+    'אפריל': 'April',
+    'מאי': 'May',
+    'יוני': 'June',
+    'יולי': 'July',
+    'אוגוסט': 'August',
+    'ספטמבר': 'September',
+    'אוקטובר': 'October',
+    'נובמבר': 'November',
+    'דצמבר': 'December'
+  };
+
+  // Regular expression to match an optional 'ב' followed by a Hebrew month name
+  return dateString.replace(/ב?(ינואר|פברואר|מרץ|אפריל|מאי|יוני|יולי|אוגוסט|ספטמבר|אוקטובר|נובמבר|דצמבר)/g, (match, month) => {
+    // Replace with the English month name
+    return monthLookup[month];
+  });
+}
+
 
 function convertCitation() {
   const input = document.getElementById("input").value;
