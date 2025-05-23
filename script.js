@@ -10,7 +10,10 @@ function translate(hebrewCitation) {
   const citationBody = buildCitation(templateType, values);
   if (!citationBody) return `Unsupported citation type: {{${templateType}}}`;
 
-  return hasRefTags ? `<ref>${citationBody}</ref>` : citationBody;
+  if (hasRefTags || templateType == 'הערה')
+    return `<ref>${citationBody}</ref>`;
+  else
+    return citationBody;
 }
 
 function extractCitationContent(text) {
