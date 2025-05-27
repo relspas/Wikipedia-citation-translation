@@ -19,7 +19,7 @@ function translate(hebrewCitation) {
 function extractCitationContent(text) {
   const patterns = [
     { regex: /^<ref>{{([^|]+)\|([\s\S]+?)}}<\/ref>$/, hasRefTags: true },
-    { regex: /^{{הערה\|{{([^|]+)\|([\s\S]+?)}}}}$/, hasRefTags: true },
+    { regex: /^{{הערה\|(?:1=)?{{([^|]+)\|([\s\S]+?)}}}}$/, hasRefTags: true },
     { regex: /^{{([^|]+)\|([\s\S]+?)}}$/, hasRefTags: false }
   ];
 
@@ -92,17 +92,22 @@ function buildCitation(templateType, values) {
     case 'כלכליסט':{
       const [author, title, articleId, date] = unnamed;
       const url = `https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=Calcalist |language=he}}`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Calcalist]] |language=he}}`;
     }
     case 'ערוץ7':{
       const [author, title, articleId, date] = unnamed;
       const url = `https://www.inn.co.il/news/${articleId}`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=ערוץ 7 |language=he}}`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Arutz Sheva]] |language=he}}`;
     }
     case 'ynet':{
       const [author, title, articleId, date] = unnamed;
       const url = `https://www.ynet.co.il/articles/1,7340,L-${articleId},00.html`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=ynet |language=he}}`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Ynet]] |language=he}}`;
+    }
+    case 'הארץ':{
+      const [author, title, articleId, date] = unnamed;
+      const url = `https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/${articleId}`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Haaretz]] |language=he}}`;
     }
     default:
       return null;
