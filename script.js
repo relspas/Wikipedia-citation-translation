@@ -158,11 +158,15 @@ function copyOutput() {
 }
 
 // update links to point to the correct base URL
-const isLocalhost = window.location.hostname === 'localhost';
-const baseURL = isLocalhost
-  ? 'http://localhost:8000'
-  : 'https://raphaelelspas.com/Wikipedia-citation-translation';
-document.querySelectorAll('.dynamic-link').forEach(link => {
-  const path = link.getAttribute('data-path');
-  link.href = `${baseURL}${path}`;
-});
+  document.addEventListener("DOMContentLoaded", () => {
+    const isLocalhost = window.location.hostname === 'localhost';
+
+    const baseURL = isLocalhost
+      ? 'http://localhost:8000'
+      : 'https://raphaelelspas.com/Wikipedia-citation-translation';
+
+    document.querySelectorAll('.dynamic-link').forEach(link => {
+      const path = link.getAttribute('data-path');
+      link.href = `${baseURL}${path}`;
+    });
+  });
