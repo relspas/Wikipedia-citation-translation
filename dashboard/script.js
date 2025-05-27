@@ -31,9 +31,9 @@ async function checkTemplateVersion(template) {
 
 async function buildDashboard() {
     const tbody = document.getElementById('dashboard-body');
-    const results = await Promise.all(templates.map(checkTemplateVersion));
 
-    results.forEach(t => {
+  templates.forEach(template => {
+    checkTemplateVersion(template).then(t => {
     const row = document.createElement('tr');
 
     const nameCell = document.createElement('td');
@@ -68,7 +68,10 @@ async function buildDashboard() {
     row.appendChild(statusCell);
 
     tbody.appendChild(row);
+    }).catch(err => {
+      console.error(`Error rendering template "${template.name}":`, err);
     });
+  });
 }
 
 buildDashboard();
