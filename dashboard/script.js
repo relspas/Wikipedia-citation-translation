@@ -1,7 +1,8 @@
 const templates = [
     { name: "הערה", id: 36114760 },
-    { name: "קישור כללי", id: 40441678 },
-    { name: "כלכליסט", id: 40088577 }
+    { name: "כלכליסט", id: 40088577 },
+    { name: "ערוץ7", id: 40461656 },
+    { name: "קישור כללי", id: 40441678},
 ];
 
 async function checkTemplateVersion(template) {
