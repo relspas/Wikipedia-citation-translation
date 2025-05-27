@@ -39,3 +39,9 @@ button {
   color: green;
   font-weight: bold;
 }
+
+.footer-links {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
