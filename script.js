@@ -77,7 +77,6 @@ function splitTemplateParams(content) {
 
 function buildCitation(templateType, values) {
   const { named, unnamed } = values;
-  console.log(`Building citation for template type: ${templateType}`, values);
 
   switch (templateType) {
     case 'קישור כללי':
