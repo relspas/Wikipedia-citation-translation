@@ -1,8 +1,8 @@
 const templates = [
-    { name: "הערה", id: 36114760 },
-    { name: "כלכליסט", id: 40088577 },
-    { name: "ערוץ7", id: 40461656 },
-    { name: "קישור כללי", id: 40441678},
+    { name: "הערה", id: 36114760, link: "https://he.wikipedia.org/wiki/Template:הערה" },
+    { name: "כלכליסט", id: 40088577, link: "https://he.wikipedia.org/wiki/Template:כלכליסט" },
+    { name: "ערוץ7", id: 40461656, link: "https://he.wikipedia.org/wiki/Template:ערוץ7" },
+    { name: "קישור כללי", id: 40441678, link: "https://he.wikipedia.org/wiki/Template:קישור_כללי" },
 ];
 
 async function checkTemplateVersion(template) {
@@ -17,7 +17,8 @@ async function checkTemplateVersion(template) {
     return {
         name: template.name,
         storedId: template.id,
-        isUpToDate: latestId === template.id
+        isUpToDate: latestId === template.id,
+        link: template.link
     };
     } catch (error) {
     console.error('Failed to fetch version for template:', template.name);
@@ -37,7 +38,10 @@ async function buildDashboard() {
     const row = document.createElement('tr');
 
     const nameCell = document.createElement('td');
-    nameCell.textContent = t.name;
+    const nameLinkCell = document.createElement('a');
+    nameLinkCell.textContent = t.name;
+    nameLinkCell.href = t.link;
+    nameCell.appendChild(nameLinkCell);
 
     const idCell = document.createElement('td');
     idCell.textContent = t.storedId;
