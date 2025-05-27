@@ -99,6 +99,11 @@ function buildCitation(templateType, values) {
       const url = `https://www.inn.co.il/news/${articleId}`;
       return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=ערוץ 7 |language=he}}`;
     }
+    case 'ynet':{
+      const [author, title, articleId, date] = unnamed;
+      const url = `https://www.ynet.co.il/articles/1,7340,L-${articleId},00.html`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=ynet |language=he}}`;
+    }
     default:
       return null;
   }

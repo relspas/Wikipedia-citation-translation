@@ -26,5 +26,9 @@ const testCases = [
   {
     input: '{{הערה|{{ערוץ7|רבקי גולדפינגר|עניין אישי והפעם עם הדסה בן ארי|312182|15 בדצמבר 2015}}}}',
     expected: '<ref>{{Cite web |title=עניין אישי והפעם עם הדסה בן ארי |url=https://www.inn.co.il/news/312182 |author=רבקי גולדפינגר |date=15 December 2015 |website=ערוץ 7 |language=he}}</ref>'
+  },
+  {
+    input: '{{הערה|{{ynet|נטע סלע|"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית"|3296619|31 באוגוסט 2006}}}}',
+    expected: '<ref>{{Cite web |title="לכתוב ליד שם התלמידה: אשכנזיה או מזרחית" |url=https://www.ynet.co.il/articles/1,7340,L-3296619,00.html |author=נטע סלע |date=31 August 2006 |website=ynet |language=he}}</ref>'
   }
 ];

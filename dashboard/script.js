@@ -3,7 +3,8 @@ const templates = [
     { name: "כלכליסט", id: 40088577, link: "https://he.wikipedia.org/wiki/Template:כלכליסט" },
     { name: "ערוץ7", id: 40461656, link: "https://he.wikipedia.org/wiki/Template:ערוץ7" },
     { name: "קישור כללי", id: 40441678, link: "https://he.wikipedia.org/wiki/Template:קישור_כללי" },
-];
+    { name: "ynet", id: 39904597, link: "https://he.wikipedia.org/wiki/Template:ynet" }
+  ];
 
 async function checkTemplateVersion(template) {
     const url = `https://he.wikipedia.org/w/api.php?action=query&format=json&origin=*&titles=Template:${encodeURIComponent(template.name)}&prop=revisions&rvprop=ids`;
