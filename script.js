@@ -17,14 +17,19 @@ function translate(hebrewCitation) {
 }
 
 function extractCitationContent(text) {
-  const withRef = text.match(/^<ref>{{([^|]+)\|([\s\S]+?)}}<\/ref>$/);
-  const withoutRef = text.match(/^{{([^|]+)\|([\s\S]+?)}}$/);
+  const patterns = [
+    { regex: /^<ref>{{([^|]+)\|([\s\S]+?)}}<\/ref>$/, hasRefTags: true },
+    { regex: /^{{הערה\|{{([^|]+)\|([\s\S]+?)}}}}$/, hasRefTags: true },
+    { regex: /^{{([^|]+)\|([\s\S]+?)}}$/, hasRefTags: false }
+  ];
 
-  if (withRef) {
-    return { templateType: withRef[1], content: withRef[2], hasRefTags: true };
-  } else if (withoutRef) {
-    return { templateType: withoutRef[1], content: withoutRef[2], hasRefTags: false };
+  for (const { regex, hasRefTags } of patterns) {
+    const match = text.match(regex);
+    if (match) {
+      return { templateType: match[1], content: match[2], hasRefTags };
+    }
   }
+
   return null;
 }
 
@@ -72,30 +77,29 @@ function splitTemplateParams(content) {
 
 function buildCitation(templateType, values) {
   const { named, unnamed } = values;
+  console.log(`Building citation for template type: ${templateType}`, values);
 
   switch (templateType) {
     case 'קישור כללי':
       return `{{Cite web` +
         (named['כותרת'] ? ` |title=${named['כותרת']}` : '') +
         (named['כתובת'] ? ` |url=${named['כתובת']}` : '') +
+        (named['הכותב'] ? ` |author=${named['הכותב']}` : '') +
         (named['תאריך_וידוא'] ? ` |access-date=${named['תאריך_וידוא']}` : '') +
         (named['אתר'] ? ` |website=${named['אתר']}` : '') +
         (named['שפה'] ? ` |language=${named['שפה']}` : '') +
         `}}`;
 
-    case 'הערה': {
-      // Handle nested templates like {{כלכליסט|...}}
-      const nested = unnamed[0];
-      const nestedTemplateMatch = nested.match(/^{{כלכליסט\|([\s\S]+)}}$/);
-      if (nestedTemplateMatch) {
-        const { named: named_parts, unnamed: unnamed_parts } = splitTemplateParams(nestedTemplateMatch[1]);
-        const [author, title, articleId, date] = unnamed_parts;
-        const url = `https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`;
-        return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=Calcalist |language=he}}`;
-      }
-      return nested; // fallback if not matching nested format
+    case 'כלכליסט':{
+      const [author, title, articleId, date] = unnamed;
+      const url = `https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=Calcalist |language=he}}`;
     }
-
+    case 'ערוץ7':{
+      const [author, title, articleId, date] = unnamed;
+      const url = `https://www.inn.co.il/news/${articleId}`;
+      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=ערוץ 7 |language=he}}`;
+    }
     default:
       return null;
   }
