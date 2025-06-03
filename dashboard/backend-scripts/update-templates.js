@@ -1,5 +1,7 @@
 const fs = require('fs');
-const TEMPLATE_FILE = '../templates.json';
+const path = require('path');
+
+const TEMPLATE_FILE = path.join(__dirname, '../templates.json');
 const templates = JSON.parse(fs.readFileSync(TEMPLATE_FILE, 'utf8'));
 
 async function getCurrentRevisionId(name) {
