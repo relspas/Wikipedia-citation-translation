@@ -3,7 +3,16 @@ async function renderDashboard() {
   const templates = await response.json();
 
   const tbody = document.getElementById('dashboard-body');
-  const rowMap = new Map();
+  
+  // Sort: UpToDate (0), Outdated (1), Unsupported (2)
+  templates.sort((a, b) => {
+    const getStatusRank = t => {
+      if (t.id == null) return 2; // Unsupported
+      if (t.id === t.current_id) return 0; // UpToDate
+      return 1; // Outdated
+    };
+    return getStatusRank(a) - getStatusRank(b);
+  });
 
   templates.forEach(template => {
     const row = document.createElement('tr');
@@ -19,6 +28,7 @@ async function renderDashboard() {
 
     const statusCell = document.createElement('td');
     const isUpToDate = template.id === template.current_id;
+    const unsupported = template.id == null;
 
     const icon = document.createElement('i');
     icon.classList.add('fas', 'status-icon');
@@ -29,8 +39,12 @@ async function renderDashboard() {
       icon.classList.add('fa-check-circle', 'up-to-date');
       icon.title = "Up to date";
       statusText.textContent = "Up to Date";
+    } else if (unsupported) {
+      icon.classList.add('fa-exclamation-circle', 'unsupported');
+      icon.title = "Unsupported";
+      statusText.textContent = "Unsupported";
     } else {
-      icon.classList.add('fa-exclamation-circle', 'outdated');
+      icon.classList.add('fa-exclamation-triangle', 'outdated');
       icon.title = "Outdated";
       statusText.textContent = "Outdated";
     }
