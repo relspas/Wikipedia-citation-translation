@@ -22,10 +22,18 @@ jobs:
           npm install node-fetch
           node dashboard/backend-scripts/update-templates.js
 
-      - name: Commit updated JSON
+      - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add templates-versioned.json
-          git commit -m "Update current_id from Wikipedia API" || echo "No changes"
-          git push
+
+      - name: Add dashboard/templates.json if changed
+        run: |
+          git add dashboard/templates.json
+          # Check if the file has changes staged
+          if ! git diff --cached --quiet; then
+            git commit -m "Update current_id from Wikipedia API"
+            git push
+          else
+            echo "No changes to commit"
+          fi
