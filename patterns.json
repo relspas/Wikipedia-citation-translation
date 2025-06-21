@@ -1,0 +1,21 @@
+[
+    {
+        "name": "general",
+        "destination":"Cite web",
+        "field-map":{
+            "כותרת": "title",
+            "כתובת": "url",
+            "הכותב": "author",
+            "תאריך_וידוא": "access-date",
+            "אתר": "website",
+            "שפה": "language"
+        },
+        "ordered-field-map":null
+    },
+    {
+        "name": "news",
+        "destination":"Cite news",
+        "field-map":null,
+        "ordered-field-map":["author", "title", "articleId", "date"]
+    }
+]

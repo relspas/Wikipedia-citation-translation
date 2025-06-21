@@ -1,3 +1,9 @@
+import templates from './templates.json';
+import patterns from './patterns.json';
+
+const templateMap = Object.fromEntries(templates.map(t => [t.name, t]));
+const patternMap = Object.fromEntries(patterns.map(p => [p.name, p]));
+
 function translate(hebrewCitation) {
   const match = extractCitationContent(hebrewCitation);
   if (!match) return 'Invalid citation format.';
@@ -74,44 +80,59 @@ function splitTemplateParams(content) {
   return { named, unnamed };
 }
 
+// Replaces variables in template strings like `https://example.com/${articleId}`
+function applyTemplateString(template, context) {
+  return template.replace(/\$\{(\w+)\}/g, (_, key) => context[key] ?? '');
+}
 
 function buildCitation(templateType, values) {
   const { named, unnamed } = values;
 
-  switch (templateType) {
-    case 'קישור כללי':
-      return `{{Cite web` +
-        (named['כותרת'] ? ` |title=${named['כותרת']}` : '') +
-        (named['כתובת'] ? ` |url=${named['כתובת']}` : '') +
-        (named['הכותב'] ? ` |author=${named['הכותב']}` : '') +
-        (named['תאריך_וידוא'] ? ` |access-date=${named['תאריך_וידוא']}` : '') +
-        (named['אתר'] ? ` |website=${named['אתר']}` : '') +
-        (named['שפה'] ? ` |language=${named['שפה']}` : '') +
-        `}}`;
+  const templateConfig = templateMap[templateType];
+  if (!templateConfig) return null;
 
-    case 'כלכליסט':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Calcalist]] |language=he}}`;
+  const patternName = templateConfig.pattern || 'general';
+  const patternConfig = patternMap[patternName];
+  if (!patternConfig) return null;
+
+  const fields = [];
+  const destination = patternConfig.destination;
+
+  if (patternConfig['field-map']) {
+    // Named fields
+    for (const [srcKey, dstKey] of Object.entries(patternConfig['field-map'])) {
+      const value = named[srcKey];
+      if (value != null) {
+        fields.push(`${dstKey}=${value}`);
+      }
     }
-    case 'ערוץ7':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.inn.co.il/news/${articleId}`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Arutz Sheva]] |language=he}}`;
-    }
-    case 'ynet':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.ynet.co.il/articles/1,7340,L-${articleId},00.html`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Ynet]] |language=he}}`;
-    }
-    case 'הארץ':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/${articleId}`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Haaretz]] |language=he}}`;
-    }
-    default:
-      return null;
   }
+
+  if (patternConfig['ordered-field-map']) {
+    // Unnamed fields
+    patternConfig['ordered-field-map'].forEach((fieldName, idx) => {
+      let value = unnamed[idx];
+      if (fieldName === 'date' && value) {
+        value = translateHebrewMonth(value);
+      }
+      if (value != null) {
+        fields.push(`${fieldName}=${value}`);
+      }
+    });
+  }
+
+  // Handle overrides from templateConfig
+  if (templateConfig.override) {
+    for (const [key, overrideVal] of Object.entries(templateConfig.override)) {
+      const evaluated = overrideVal.includes('${')
+        ? applyTemplateString(overrideVal, Object.fromEntries(patternConfig['ordered-field-map']?.map((f, i) => [f, unnamed[i]]) || []))
+        : overrideVal;
+
+      fields.push(`${key}=${evaluated}`);
+    }
+  }
+
+  return `{{${destination} ${fields.map(f => `|${f}`).join('')}}}`;
 }
 
 function translateHebrewMonth(dateString) {
@@ -138,10 +159,9 @@ function translateHebrewMonth(dateString) {
   });
 }
 
-
-function convertCitation() {
+window.convertCitation = function () {
   const input = document.getElementById("input").value;
-  citation = translate(input);
+  const citation = translate(input);
   document.getElementById("output").innerText = citation;
   document.getElementById("copy-status").innerText = ""; // Clear copy status
 }
@@ -166,17 +186,3 @@ function copyOutput() {
     document.body.removeChild(textarea);
   });
 }
-
-// update links to point to the correct base URL
-  document.addEventListener("DOMContentLoaded", () => {
-    const isLocalhost = window.location.hostname === 'localhost';
-
-    const baseURL = isLocalhost
-      ? 'http://localhost:8000'
-      : 'https://raphaelelspas.com/Wikipedia-citation-translation';
-
-    document.querySelectorAll('.dynamic-link').forEach(link => {
-      const path = link.getAttribute('data-path');
-      link.href = `${baseURL}${path}`;
-    });
-  });

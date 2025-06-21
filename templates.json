@@ -1,0 +1,255 @@
+[
+  {
+    "name": "Bizportal"
+  },
+  {
+    "name": "CBR"
+  },
+  {
+    "name": "I24"
+  },
+  {
+    "name": "IGN"
+  },
+  {
+    "name": "Mako"
+  },
+  {
+    "name": "Mynet"
+  },
+  {
+    "name": "Mynet2"
+  },
+  {
+    "name": "Mynet3"
+  },
+  {
+    "name": "News1"
+  },
+  {
+    "name": "NFC"
+  },
+  {
+    "name": "Nrg"
+  },
+  {
+    "name": "NYT"
+  },
+  {
+    "name": "One"
+  },
+  {
+    "name": "Onlife"
+  },
+  {
+    "name": "PokerNews"
+  },
+  {
+    "name": "TheMarker"
+  },
+  {
+    "name": "TheMarker - עיתונאי"
+  },
+  {
+    "name": "Time Out ישראל"
+  },
+  {
+    "name": "Time Out תל אביב"
+  },
+  {
+    "name": "Xnet"
+  },
+  {
+    "name": "Ynet",
+    "pattern": "news",
+    "override": {
+      "url" : "`https://www.ynet.co.il/articles/1,7340,L-${articleId},00.html`",
+      "website" : "[[Ynet]]"
+    }
+  },
+  {
+    "name": "איי פייר"
+  },
+  {
+    "name": "אייס"
+  },
+  {
+    "name": "אנשים ומחשבים"
+  },
+  {
+    "name": "בגלל"
+  },
+  {
+    "name": "בילבורד"
+  },
+  {
+    "name": "גיקטיים"
+  },
+  {
+    "name": "גל\"צ"
+  },
+  {
+    "name": "גלובס"
+  },
+  {
+    "name": "גלי צה\"ל"
+  },
+  {
+    "name": "דבר העובדים"
+  },
+  {
+    "name": "דוקטורס"
+  },
+  {
+    "name": "הארץ",
+    "pattern": "news",
+    "override": {
+      "url" : "`https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/${articleId}`",
+      "website" : "[[Haaretz]]"
+    }
+  },
+  {
+    "name": "הארץ - עיתונאי"
+  },
+  {
+    "name": "הגרדיאן"
+  },
+  {
+    "name": "הטלגרף"
+  },
+  {
+    "name": "העין השביעית"
+  },
+  {
+    "name": "הערה"
+  },
+  {
+    "name": "וואלה!"
+  },
+  {
+    "name": "חדשות 13"
+  },
+  {
+    "name": "חי פה"
+  },
+  {
+    "name": "טקטיים"
+  },
+  {
+    "name": "ידיעות אחרונות"
+  },
+  {
+    "name": "ישראל דיפנס"
+  },
+  {
+    "name": "ישראל היום"
+  },
+  {
+    "name": "ישראל היום 1"
+  },
+  {
+    "name": "ישראל היום 2"
+  },
+  {
+    "name": "כאן"
+  },
+  {
+    "name": "כאן ארכיון"
+  },
+  {
+    "name": "כל העיר"
+  },
+  {
+    "name": "כלבו"
+  },
+  {
+    "name": "כלכליסט",
+    "pattern": "news",
+    "override": {
+      "url" : "`https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`",
+      "website" : "[[Calcalist]]"
+    }
+  },
+  {
+    "name": "מוסף כלכליסט"
+  },
+  {
+    "name": "מוסף שבת"
+  },
+  {
+    "name": "מידה"
+  },
+  {
+    "name": "מעריב אונליין"
+  },
+  {
+    "name": "מעריב השבוע"
+  },
+  {
+    "name": "מקור ראשון"
+  },
+  {
+    "name": "נענע10"
+  },
+  {
+    "name": "ספורט 5"
+  },
+  {
+    "name": "ספורט 5 משחקים"
+  },
+  {
+    "name": "ספורט1"
+  },
+  {
+    "name": "סרוגים"
+  },
+  {
+    "name": "עכבר העיר"
+  },
+  {
+    "name": "עכשיו 14"
+  },
+  {
+    "name": "עמוד ראשון"
+  },
+  {
+    "name": "ערוץ 20"
+  },
+  {
+    "name": "ערוץ הכלכלה"
+  },
+  {
+    "name": "ערוץ עשר"
+  },
+  {
+    "name": "ערוץ7",
+    "pattern": "news",
+    "override": {
+      "url" : "`https://www.inn.co.il/news/${articleId}`",
+      "website" : "[[Arutz Sheva]]"
+    }
+  },
+  {
+    "name": "פורבס"
+  },
+  {
+    "name": "פנאי פלוס"
+  },
+  {
+    "name": "פרוגי"
+  },
+  {
+    "name": "קישור כללי",
+    "pattern": "general",
+    "override": null
+  },
+  {
+    "name": "רויטרס"
+  },
+  {
+    "name": "שיחה מקומית"
+  },
+  {
+    "name": "שקוף"
+  }
+]
