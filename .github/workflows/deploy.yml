@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # or 'master'
+      - json-refactor
 
 jobs:
   build-and-deploy:
