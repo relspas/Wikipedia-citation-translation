@@ -2,7 +2,8 @@ name: Deploy Vite site to GitHub Pages
 
 on:
   push:
-    branches: [json-refactor]  # your branch name
+    branches:
+      - dev
   workflow_dispatch:            # allows manual deploys from the Actions tab
 
 permissions:
@@ -18,6 +19,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set base path
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          if [[ "${GITHUB_REF##*/}" == "main" ]]; then
+            echo "BASE_PATH=/${REPO_NAME}/" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF##*/}" == "dev" ]]; then
+            echo "BASE_PATH=/${REPO_NAME}/dev/" >> $GITHUB_ENV
+          fi
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -28,9 +38,11 @@ jobs:
 
       - name: Build site
         run: npm run build
+        env:
+          BASE_PATH: ${{ env.BASE_PATH }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ./dist
 
