@@ -2,28 +2,24 @@ name: Deploy Vite site to GitHub Pages
 
 on:
   push:
-    branches: [json-refactor]  # Replace with your branch
-  workflow_dispatch:
+    branches: [json-refactor]  # your branch name
+  workflow_dispatch:            # allows manual deploys from the Actions tab
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
@@ -34,9 +30,9 @@ jobs:
         run: npm run build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2  # ✅ Use v2, not v1 or v3
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: dist
+          path: ./dist
 
   deploy:
     needs: build
@@ -44,7 +40,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
