@@ -21,18 +21,18 @@
   },
   {
     "input": "{{כלכליסט|בשיתוף: גינדי החזקות|שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|3740764|21 ביוני 2018}}",
-    "expected": "{{Cite web |title=שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|url=https://www.calcalist.co.il/local/articles/0,7340,L-3740764,00.html|author=בשיתוף: גינדי החזקות|date=21 June 2018|website=[[Calcalist]]|language=he}}"
+    "expected": "{{Cite news |author=בשיתוף: גינדי החזקות|title=שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|url=https://www.calcalist.co.il/local/articles/0,7340,L-3740764,00.html|date=21 June 2018|website=[[Calcalist]]|language=he}}"
   },
   {
     "input": "{{הערה|{{ערוץ7|רבקי גולדפינגר|עניין אישי והפעם עם הדסה בן ארי|312182|15 בדצמבר 2015}}}}",
-    "expected": "<ref>{{Cite web |title=עניין אישי והפעם עם הדסה בן ארי|url=https://www.inn.co.il/news/312182|author=רבקי גולדפינגר|date=15 December 2015|website=[[Arutz Sheva]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news |author=רבקי גולדפינגר|title=עניין אישי והפעם עם הדסה בן ארי|url=https://www.inn.co.il/news/312182|date=15 December 2015|website=[[Arutz Sheva]]|language=he}}</ref>"
   },
   {
     "input": "{{הערה|{{ynet|נטע סלע|\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|3296619|31 באוגוסט 2006}}}}",
-    "expected": "<ref>{{Cite web |title=\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|url=https://www.ynet.co.il/articles/1,7340,L-3296619,00.html|author=נטע סלע|date=31 August 2006|website=[[Ynet]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news |author=נטע סלע|title=\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|url=https://www.ynet.co.il/articles/1,7340,L-3296619,00.html|date=31 August 2006|website=[[Ynet]]|language=he}}</ref>"
   },
   {
     "input": "{{הערה|1={{הארץ|אור קשתי|משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|1.1192186|7 במרץ 2010}}}}",
-    "expected": "<ref>{{Cite web |title=משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|url=https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/1.1192186|author=אור קשתי|date=7 March 2010|website=[[Haaretz]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news |author=אור קשתי|title=משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|url=https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/1.1192186|date=7 March 2010|website=[[Haaretz]]|language=he}}</ref>"
   }
 ]

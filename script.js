@@ -88,6 +88,11 @@ function applyTemplateString(template, key) {
 function buildCitation(templateType, values) {
   const { named, unnamed } = values;
 
+  //capitalize the first letter of templateType
+  if (templateType && templateType.length > 0) {
+    templateType = templateType[0].toUpperCase() + templateType.slice(1);
+  }
+
   const templateConfig = templateMap[templateType];
   if (!templateConfig) return null;
 
