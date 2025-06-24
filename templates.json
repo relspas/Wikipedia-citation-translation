@@ -1,6 +1,10 @@
 [
   {
-    "name": "Bizportal"
+    "name": "Bizportal",
+    "pattern": "news",
+    "override": {
+      "url" : "http://www.bizportal.co.il/general/news/article/${articleId}"
+    }
   },
   {
     "name": "CBR"
@@ -89,7 +93,12 @@
     "name": "גל\"צ"
   },
   {
-    "name": "גלובס"
+    "name": "גלובס",
+    "pattern": "news",
+    "override": {
+      "url" : "https://www.globes.co.il/news/article.aspx?did=${articleId}",
+      "website" : "[[Globes (newspaper)|Globes]]"
+    }
   },
   {
     "name": "גלי צה\"ל"
