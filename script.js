@@ -1,4 +1,10 @@
-function translate(hebrewCitation) {
+import templates from './templates.json';
+import patterns from './patterns.json';
+
+const templateMap = Object.fromEntries(templates.map(t => [t.name, t]));
+const patternMap = Object.fromEntries(patterns.map(p => [p.name, p]));
+
+export function translate(hebrewCitation) {
   const match = extractCitationContent(hebrewCitation);
   if (!match) return 'Invalid citation format.';
 
@@ -74,44 +80,74 @@ function splitTemplateParams(content) {
   return { named, unnamed };
 }
 
+// Replaces variables in template strings like `https://example.com/${articleId}`
+function applyTemplateString(template, key) {
+  return template.replace(/\$\{(\w+)\}/g, key);
+}
 
 function buildCitation(templateType, values) {
   const { named, unnamed } = values;
 
-  switch (templateType) {
-    case 'קישור כללי':
-      return `{{Cite web` +
-        (named['כותרת'] ? ` |title=${named['כותרת']}` : '') +
-        (named['כתובת'] ? ` |url=${named['כתובת']}` : '') +
-        (named['הכותב'] ? ` |author=${named['הכותב']}` : '') +
-        (named['תאריך_וידוא'] ? ` |access-date=${named['תאריך_וידוא']}` : '') +
-        (named['אתר'] ? ` |website=${named['אתר']}` : '') +
-        (named['שפה'] ? ` |language=${named['שפה']}` : '') +
-        `}}`;
-
-    case 'כלכליסט':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Calcalist]] |language=he}}`;
-    }
-    case 'ערוץ7':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.inn.co.il/news/${articleId}`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Arutz Sheva]] |language=he}}`;
-    }
-    case 'ynet':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.ynet.co.il/articles/1,7340,L-${articleId},00.html`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Ynet]] |language=he}}`;
-    }
-    case 'הארץ':{
-      const [author, title, articleId, date] = unnamed;
-      const url = `https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/${articleId}`;
-      return `{{Cite web |title=${title} |url=${url} |author=${author} |date=${translateHebrewMonth(date)} |website=[[Haaretz]] |language=he}}`;
-    }
-    default:
-      return null;
+  //capitalize the first letter of templateType
+  if (templateType && templateType.length > 0) {
+    templateType = templateType[0].toUpperCase() + templateType.slice(1);
   }
+
+  const templateConfig = templateMap[templateType];
+  if (!templateConfig) return null;
+
+  const patternName = templateConfig.pattern || 'general';
+  const patternConfig = patternMap[patternName];
+  if (!patternConfig) return null;
+
+  const fields = [];
+  const destination = patternConfig.destination;
+
+  if (patternConfig['field-map']) {
+    // Named fields
+    for (const [srcKey, dstKey] of Object.entries(patternConfig['field-map'])) {
+      const value = named[srcKey];
+      if (value != null) {
+        fields.push(`${dstKey}=${value}`);
+      }
+    }
+  }
+
+  if (patternConfig['ordered-field-map']) {
+    // Unnamed fields
+    patternConfig['ordered-field-map'].forEach((fieldName, idx) => {
+      let value = unnamed[idx];
+      if (fieldName === 'date' && value) {
+        value = translateHebrewMonth(value);
+      } else if (templateConfig.override && templateConfig.override[fieldName]) {
+        value = applyTemplateString(templateConfig.override[fieldName], value); //apply template
+      }
+      if (value != null) {
+        fields.push(`${fieldName}=${value}`);
+      }
+    });
+  }
+
+  // Handle overrides from templateConfig
+  if (templateConfig.override) {
+    const orderedFields = new Set(patternConfig['ordered-field-map'] || []);
+    for (const [key, overrideVal] of Object.entries(templateConfig.override)) {
+      if (orderedFields.has(key)) continue; // Skip if key is in ordered-field-map
+      const evaluated = overrideVal.includes('${')
+      ? applyTemplateString(overrideVal, named[key] || unnamed[0])
+      : overrideVal;
+      fields.push(`${key}=${evaluated}`);
+    }
+  }
+
+  // Handle fixed-fields from templateConfig
+  if (patternConfig['fixed-fields']) {
+    for (const [key, value] of Object.entries(patternConfig['fixed-fields'])) {
+      fields.push(`${key}=${value}`);
+    }
+  }
+
+  return `{{${destination} ${fields.map(f => `|${f}`).join('')}}}`;
 }
 
 function translateHebrewMonth(dateString) {
@@ -138,10 +174,9 @@ function translateHebrewMonth(dateString) {
   });
 }
 
-
-function convertCitation() {
+window.convertCitation = function () {
   const input = document.getElementById("input").value;
-  citation = translate(input);
+  const citation = translate(input);
   document.getElementById("output").innerText = citation;
   document.getElementById("copy-status").innerText = ""; // Clear copy status
 }

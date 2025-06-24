@@ -1,6 +1,6 @@
+import templates from './templates.json';
+
 async function renderDashboard() {
-  const response = await fetch('templates.json');
-  const templates = await response.json();
 
   const tbody = document.getElementById('dashboard-body');
   
