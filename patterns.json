@@ -16,6 +16,9 @@
         "name": "news",
         "destination":"Cite news",
         "field-map":null,
-        "ordered-field-map":["author", "title", "articleId", "date"]
+        "ordered-field-map":["author", "title", "url", "date"],
+        "fixed-fields": {
+            "language": "he"
+        }
     }
 ]

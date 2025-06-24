@@ -166,7 +166,7 @@
     "name": "כלכליסט",
     "pattern": "news",
     "override": {
-      "url" : "`https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html`",
+      "url" : "https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html",
       "website" : "[[Calcalist]]"
     }
   },

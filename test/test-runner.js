@@ -1,3 +1,6 @@
+import testCases from './test-data.json';
+import {translate} from '../script.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   testCases.forEach(({ input, expected }, i) => {
     const result = translate(input); // Your function

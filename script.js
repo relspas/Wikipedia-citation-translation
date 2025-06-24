@@ -4,7 +4,7 @@ import patterns from './patterns.json';
 const templateMap = Object.fromEntries(templates.map(t => [t.name, t]));
 const patternMap = Object.fromEntries(patterns.map(p => [p.name, p]));
 
-function translate(hebrewCitation) {
+export function translate(hebrewCitation) {
   const match = extractCitationContent(hebrewCitation);
   if (!match) return 'Invalid citation format.';
 
@@ -81,8 +81,8 @@ function splitTemplateParams(content) {
 }
 
 // Replaces variables in template strings like `https://example.com/${articleId}`
-function applyTemplateString(template, context) {
-  return template.replace(/\$\{(\w+)\}/g, (_, key) => context[key] ?? '');
+function applyTemplateString(template, key) {
+  return template.replace(/\$\{(\w+)\}/g, key);
 }
 
 function buildCitation(templateType, values) {
@@ -114,6 +114,8 @@ function buildCitation(templateType, values) {
       let value = unnamed[idx];
       if (fieldName === 'date' && value) {
         value = translateHebrewMonth(value);
+      } else if (templateConfig.override && templateConfig.override[fieldName]) {
+        value = applyTemplateString(templateConfig.override[fieldName], value); //apply template
       }
       if (value != null) {
         fields.push(`${fieldName}=${value}`);
@@ -123,12 +125,20 @@ function buildCitation(templateType, values) {
 
   // Handle overrides from templateConfig
   if (templateConfig.override) {
+    const orderedFields = new Set(patternConfig['ordered-field-map'] || []);
     for (const [key, overrideVal] of Object.entries(templateConfig.override)) {
+      if (orderedFields.has(key)) continue; // Skip if key is in ordered-field-map
       const evaluated = overrideVal.includes('${')
-        ? applyTemplateString(overrideVal, Object.fromEntries(patternConfig['ordered-field-map']?.map((f, i) => [f, unnamed[i]]) || []))
-        : overrideVal;
-
+      ? applyTemplateString(overrideVal, named[key] || unnamed[0])
+      : overrideVal;
       fields.push(`${key}=${evaluated}`);
+    }
+  }
+
+  // Handle fixed-fields from templateConfig
+  if (patternConfig['fixed-fields']) {
+    for (const [key, value] of Object.entries(patternConfig['fixed-fields'])) {
+      fields.push(`${key}=${value}`);
     }
   }
 

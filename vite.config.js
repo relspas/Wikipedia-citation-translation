@@ -9,6 +9,7 @@ export default defineConfig({
       input: {
         main: path.resolve(__dirname, 'index.html'),
         dashbaord: path.resolve(__dirname, 'dashboard/index.html'),
+        test: path.resolve(__dirname, 'test/index.html'),
       }
     }
   }
