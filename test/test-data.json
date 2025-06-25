@@ -32,6 +32,10 @@
     "expected": "<ref>{{Cite news|author=נטע סלע|date=31 August 2006|language=he|title=\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|url=https://www.ynet.co.il/articles/1,7340,L-3296619,00.html|website=[[Ynet]]}}</ref>"
   },
   {
+    "input": "{{ynet|טל שחף|המציאות המדומה עולה על כל דימיון|digital/article/r1AIJ48pH|5 בדצמבר 2019}}",
+    "expected": "{{Cite news|author=טל שחף|date=5 December 2019|language=he|title=המציאות המדומה עולה על כל דימיון|url=https://www.ynet.co.il/digital/article/r1AIJ48pH|website=[[Ynet]]}}"
+  },
+  {
     "input": "{{הערה|1={{הארץ|אור קשתי|משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|1.1192186|7 במרץ 2010}}}}",
     "expected": "<ref>{{Cite news|author=אור קשתי|date=7 March 2010|language=he|title=משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|url=https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/1.1192186|website=[[Haaretz]]}}</ref>"
   }

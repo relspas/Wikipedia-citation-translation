@@ -67,7 +67,15 @@
     "name": "Ynet",
     "pattern": "news",
     "override": {
-      "url" : "https://www.ynet.co.il/articles/1,7340,L-${3},00.html",
+      "url" : {
+        "op": "ternary",
+        "params":{
+          "condition": "^\\d+$",
+          "testString": "${3}",
+          "conditionTrue": "https://www.ynet.co.il/articles/1,7340,L-${3},00.html",
+          "conditionFalse": "https://www.ynet.co.il/${3}"
+        }
+      },
       "website" : "[[Ynet]]"
     }
   },
