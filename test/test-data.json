@@ -1,38 +1,42 @@
 [
   {
     "input": "{{הערה|{{קישור כללי|כותרת=בריכת דורה - שלולית חורף בנתניה - חדרה וקיסריה {{!}} טיולי|אתר=אתר טיולי|כתובת=https://www.tiuli.com/points-of-interest/356/בריכת-דורה-שלולית-חורף-בנתניה|שפה=he|תאריך_וידוא=2021-01-14|הכותב=אתר טיולי}}}}",
-    "expected": "<ref>{{Cite web |title=בריכת דורה - שלולית חורף בנתניה - חדרה וקיסריה {{!}} טיולי|url=https://www.tiuli.com/points-of-interest/356/בריכת-דורה-שלולית-חורף-בנתניה|author=אתר טיולי|access-date=2021-01-14|website=אתר טיולי|language=he}}</ref>"
+    "expected": "<ref>{{Cite web|access-date=2021-01-14|author=אתר טיולי|language=he|title=בריכת דורה - שלולית חורף בנתניה - חדרה וקיסריה {{!}} טיולי|url=https://www.tiuli.com/points-of-interest/356/בריכת-דורה-שלולית-חורף-בנתניה|website=אתר טיולי}}</ref>"
   },
   {
     "input": "<ref>{{קישור כללי|כתובת=https://moreshet.netanya.muni.il/sites/sitepage/?itemId=1353|כותרת=נתניה {{!}} עיר ימים|אתר=moreshet.netanya.muni.il|שפה=he|תאריך_וידוא=2022-01-13}}</ref>",
-    "expected": "<ref>{{Cite web |title=נתניה {{!}} עיר ימים|url=https://moreshet.netanya.muni.il/sites/sitepage/?itemId=1353|access-date=2022-01-13|website=moreshet.netanya.muni.il|language=he}}</ref>"
+    "expected": "<ref>{{Cite web|access-date=2022-01-13|language=he|title=נתניה {{!}} עיר ימים|url=https://moreshet.netanya.muni.il/sites/sitepage/?itemId=1353|website=moreshet.netanya.muni.il}}</ref>"
   },
   {
     "input": "<ref>{{קישור כללי|כתובת=http://www.halat.co.il/html5/arclookup.taf?&did=2300&_id=28880&g=12156&SM=13153|כותרת=עיר ימים|אתר=www.halat.co.il|שפה=HE|תאריך_וידוא=2022-01-13}}</ref>",
-    "expected": "<ref>{{Cite web |title=עיר ימים|url=http://www.halat.co.il/html5/arclookup.taf?&did=2300&_id=28880&g=12156&SM=13153|access-date=2022-01-13|website=www.halat.co.il|language=HE}}</ref>"
+    "expected": "<ref>{{Cite web|access-date=2022-01-13|language=HE|title=עיר ימים|url=http://www.halat.co.il/html5/arclookup.taf?&did=2300&_id=28880&g=12156&SM=13153|website=www.halat.co.il}}</ref>"
   },
   {
     "input": "<ref>{{קישור כללי|כתובת=https://michaelarch.wordpress.com/2016/10/29/סיבוב-בשכונת-עיר-ימים-בנתניה/|הכותב=מיכאל יעקובסון|כותרת=סיבוב בשכונת עיר ימים בנתניה|אתר=חלון אחורי|תאריך=2016-10-29|שפה=he-IL|תאריך_וידוא=2022-01-13}}</ref>",
-    "expected": "<ref>{{Cite web |title=סיבוב בשכונת עיר ימים בנתניה|url=https://michaelarch.wordpress.com/2016/10/29/סיבוב-בשכונת-עיר-ימים-בנתניה/|author=מיכאל יעקובסון|access-date=2022-01-13|website=חלון אחורי|language=he-IL}}</ref>"
+    "expected": "<ref>{{Cite web|access-date=2022-01-13|author=מיכאל יעקובסון|language=he-IL|title=סיבוב בשכונת עיר ימים בנתניה|url=https://michaelarch.wordpress.com/2016/10/29/סיבוב-בשכונת-עיר-ימים-בנתניה/|website=חלון אחורי}}</ref>"
   },
   {
     "input": "{{הערה|{{כלכליסט|בשיתוף: גינדי החזקות|שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|3740764|21 ביוני 2018}}}}",
-    "expected": "<ref>{{Cite news |author=בשיתוף: גינדי החזקות|title=שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|url=https://www.calcalist.co.il/local/articles/0,7340,L-3740764,00.html|date=21 June 2018|website=[[Calcalist]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news|author=בשיתוף: גינדי החזקות|date=21 June 2018|language=he|title=שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|url=https://www.calcalist.co.il/local/articles/0,7340,L-3740764,00.html|website=[[Calcalist]]}}</ref>"
   },
   {
-    "input": "{{כלכליסט|בשיתוף: גינדי החזקות|שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|3740764|21 ביוני 2018}}",
-    "expected": "{{Cite news |author=בשיתוף: גינדי החזקות|title=שכונת עיר ימים בנתניה משנה את חוקי המשחק בנדל\"ן באזור השרון|url=https://www.calcalist.co.il/local/articles/0,7340,L-3740764,00.html|date=21 June 2018|website=[[Calcalist]]|language=he}}"
+    "input": "{{כלכליסט|מאיר אורבך|יוג'ין קנדל פורש מתפקיד מנכ\"ל סטארט-אפ ניישן|technology/article/rkyNT55I00|19 באפריל 2021}}",
+    "expected": "{{Cite news|author=מאיר אורבך|date=19 April 2021|language=he|title=יוג'ין קנדל פורש מתפקיד מנכ\"ל סטארט-אפ ניישן|url=https://www.calcalist.co.il/technology/article/rkyNT55I00|website=[[Calcalist]]}}"
   },
   {
     "input": "{{הערה|{{ערוץ7|רבקי גולדפינגר|עניין אישי והפעם עם הדסה בן ארי|312182|15 בדצמבר 2015}}}}",
-    "expected": "<ref>{{Cite news |author=רבקי גולדפינגר|title=עניין אישי והפעם עם הדסה בן ארי|url=https://www.inn.co.il/news/312182|date=15 December 2015|website=[[Arutz Sheva]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news|author=רבקי גולדפינגר|date=15 December 2015|language=he|title=עניין אישי והפעם עם הדסה בן ארי|url=https://www.inn.co.il/news/312182|website=[[Arutz Sheva]]}}</ref>"
   },
   {
     "input": "{{הערה|{{ynet|נטע סלע|\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|3296619|31 באוגוסט 2006}}}}",
-    "expected": "<ref>{{Cite news |author=נטע סלע|title=\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|url=https://www.ynet.co.il/articles/1,7340,L-3296619,00.html|date=31 August 2006|website=[[Ynet]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news|author=נטע סלע|date=31 August 2006|language=he|title=\"לכתוב ליד שם התלמידה: אשכנזיה או מזרחית\"|url=https://www.ynet.co.il/articles/1,7340,L-3296619,00.html|website=[[Ynet]]}}</ref>"
+  },
+  {
+    "input": "{{ynet|טל שחף|המציאות המדומה עולה על כל דימיון|digital/article/r1AIJ48pH|5 בדצמבר 2019}}",
+    "expected": "{{Cite news|author=טל שחף|date=5 December 2019|language=he|title=המציאות המדומה עולה על כל דימיון|url=https://www.ynet.co.il/digital/article/r1AIJ48pH|website=[[Ynet]]}}"
   },
   {
     "input": "{{הערה|1={{הארץ|אור קשתי|משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|1.1192186|7 במרץ 2010}}}}",
-    "expected": "<ref>{{Cite news |author=אור קשתי|title=משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|url=https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/1.1192186|date=7 March 2010|website=[[Haaretz]]|language=he}}</ref>"
+    "expected": "<ref>{{Cite news|author=אור קשתי|date=7 March 2010|language=he|title=משרד החינוך התלונן במשטרה נגד חרדים אשכנזים שנמנעים מלשלוח את בנותיהם ללמוד עם מזרחיות|url=https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/1.1192186|website=[[Haaretz]]}}</ref>"
   }
 ]

@@ -3,7 +3,7 @@
     "name": "Bizportal",
     "pattern": "news",
     "override": {
-      "url" : "http://www.bizportal.co.il/general/news/article/${articleId}"
+      "url" : "http://www.bizportal.co.il/general/news/article/${3}"
     }
   },
   {
@@ -67,7 +67,15 @@
     "name": "Ynet",
     "pattern": "news",
     "override": {
-      "url" : "https://www.ynet.co.il/articles/1,7340,L-${articleId},00.html",
+      "url" : {
+        "op": "ternary",
+        "params":{
+          "condition": "^\\d+$",
+          "testString": "${3}",
+          "conditionTrue": "https://www.ynet.co.il/articles/1,7340,L-${3},00.html",
+          "conditionFalse": "https://www.ynet.co.il/${3}"
+        }
+      },
       "website" : "[[Ynet]]"
     }
   },
@@ -96,7 +104,7 @@
     "name": "גלובס",
     "pattern": "news",
     "override": {
-      "url" : "https://www.globes.co.il/news/article.aspx?did=${articleId}",
+      "url" : "https://www.globes.co.il/news/article.aspx?did=${3}",
       "website" : "[[Globes (newspaper)|Globes]]"
     }
   },
@@ -113,7 +121,7 @@
     "name": "הארץ",
     "pattern": "news",
     "override": {
-      "url" : "https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/${articleId}",
+      "url" : "https://www.haaretz.co.il/news/politics/2011-09-12/ty-article/${3}",
       "website" : "[[Haaretz]]"
     }
   },
@@ -175,7 +183,15 @@
     "name": "כלכליסט",
     "pattern": "news",
     "override": {
-      "url" : "https://www.calcalist.co.il/local/articles/0,7340,L-${articleId},00.html",
+      "url" : {
+        "op": "ternary",
+        "params":{
+          "condition": "^\\d+$",
+          "testString": "${3}",
+          "conditionTrue": "https://www.calcalist.co.il/local/articles/0,7340,L-${3},00.html",
+          "conditionFalse": "https://www.calcalist.co.il/${3}"
+        }
+      },
       "website" : "[[Calcalist]]"
     }
   },
@@ -234,7 +250,7 @@
     "name": "ערוץ7",
     "pattern": "news",
     "override": {
-      "url" : "https://www.inn.co.il/news/${articleId}",
+      "url" : "https://www.inn.co.il/news/${3}",
       "website" : "[[Arutz Sheva]]"
     }
   },

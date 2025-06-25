@@ -81,8 +81,16 @@ function splitTemplateParams(content) {
 }
 
 // Replaces variables in template strings like `https://example.com/${articleId}`
-function applyTemplateString(template, key) {
-  return template.replace(/\$\{(\w+)\}/g, key);
+function applyTemplateString(template, namedFields, orderedFields) {
+  return template.replace(/\$\{(\w+)\}/g, (match, key) => {
+    if (key in namedFields) {
+      return namedFields[key];
+    }
+    if (Number(key)-1 < orderedFields.length) {
+      return orderedFields[Number(key)-1];
+    }
+    return match;
+  });
 }
 
 function buildCitation(templateType, values) {
@@ -105,7 +113,7 @@ function buildCitation(templateType, values) {
 
   if (patternConfig['field-map']) {
     // Named fields
-    for (const [srcKey, dstKey] of Object.entries(patternConfig['field-map'])) {
+    for (const [dstKey, srcKey] of Object.entries(patternConfig['field-map'])) {
       const value = named[srcKey];
       if (value != null) {
         fields.push(`${dstKey}=${value}`);
@@ -115,27 +123,33 @@ function buildCitation(templateType, values) {
 
   if (patternConfig['ordered-field-map']) {
     // Unnamed fields
-    patternConfig['ordered-field-map'].forEach((fieldName, idx) => {
-      let value = unnamed[idx];
-      if (fieldName === 'date' && value) {
+    for (const [dstKey, srcKey] of Object.entries(patternConfig['ordered-field-map'])) {
+      let value = applyTemplateString(srcKey, named, unnamed)
+      if ((dstKey === 'date' || dstKey === 'access-date') && value) {
         value = translateHebrewMonth(value);
-      } else if (templateConfig.override && templateConfig.override[fieldName]) {
-        value = applyTemplateString(templateConfig.override[fieldName], value); //apply template
       }
       if (value != null) {
-        fields.push(`${fieldName}=${value}`);
+        fields.push(`${dstKey}=${value}`);
       }
-    });
+    }
   }
 
   // Handle overrides from templateConfig
   if (templateConfig.override) {
-    const orderedFields = new Set(patternConfig['ordered-field-map'] || []);
+    // const orderedFields = new Set(patternConfig['ordered-field-map'] || []);
     for (const [key, overrideVal] of Object.entries(templateConfig.override)) {
-      if (orderedFields.has(key)) continue; // Skip if key is in ordered-field-map
-      const evaluated = overrideVal.includes('${')
-      ? applyTemplateString(overrideVal, named[key] || unnamed[0])
-      : overrideVal;
+      // if (orderedFields.has(key)) continue; // Skip if key is in ordered-field-map --NOTE not how this should work.
+      let evaluated;
+      if (typeof overrideVal === 'string'){
+        evaluated = applyTemplateString(overrideVal, named, unnamed);
+      } else if (typeof overrideVal === 'object' && overrideVal.op === 'ternary') {
+        const regex = new RegExp(overrideVal.params.condition);
+        if (regex.test(applyTemplateString(overrideVal.params.testString, named, unnamed))) {
+          evaluated = applyTemplateString(overrideVal.params.conditionTrue, named, unnamed);
+        } else {
+          evaluated = applyTemplateString(overrideVal.params.conditionFalse, named, unnamed);
+        }
+      }
       fields.push(`${key}=${evaluated}`);
     }
   }
@@ -147,7 +161,7 @@ function buildCitation(templateType, values) {
     }
   }
 
-  return `{{${destination} ${fields.map(f => `|${f}`).join('')}}}`;
+return `{{${destination}${fields.sort().map(f => `|${f}`).join('')}}}`;
 }
 
 function translateHebrewMonth(dateString) {

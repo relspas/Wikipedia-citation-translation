@@ -3,12 +3,12 @@
         "name": "general",
         "destination":"Cite web",
         "field-map":{
-            "כותרת": "title",
-            "כתובת": "url",
-            "הכותב": "author",
-            "תאריך_וידוא": "access-date",
-            "אתר": "website",
-            "שפה": "language"
+            "title": "כותרת",
+            "url": "כתובת",
+            "author": "הכותב",
+            "access-date": "תאריך_וידוא",
+            "website": "אתר",
+            "language": "שפה"
         },
         "ordered-field-map":null
     },
@@ -16,7 +16,11 @@
         "name": "news",
         "destination":"Cite news",
         "field-map":null,
-        "ordered-field-map":["author", "title", "url", "date"],
+        "ordered-field-map":{
+            "author": "${1}",
+            "title": "${2}",
+            "date": "${4}"
+        },
         "fixed-fields": {
             "language": "he"
         }
