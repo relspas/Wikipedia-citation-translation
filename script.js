@@ -24,9 +24,9 @@ export function translate(hebrewCitation) {
 
 function extractCitationContent(text) {
   const patterns = [
-    { regex: /^<ref>{{([^|]+)\|([\s\S]+?)}}<\/ref>$/, hasRefTags: true },
-    { regex: /^{{הערה\|(?:1=)?{{([^|]+)\|([\s\S]+?)}}}}$/, hasRefTags: true },
-    { regex: /^{{([^|]+)\|([\s\S]+?)}}$/, hasRefTags: false }
+    { regex: /^<ref>{{\s*([^|]+)\s*\|([\s\S]+?)}}<\/ref>$/, hasRefTags: true },
+    { regex: /^{{\s*הערה\s*\|(?:1=)?{{\s*([^|]+)\s*\|([\s\S]+?)}}}}$/, hasRefTags: true },
+    { regex: /^{{\s*([^|]+)\s*\|([\s\S]+?)}}$/, hasRefTags: false }
   ];
 
   for (const { regex, hasRefTags } of patterns) {
