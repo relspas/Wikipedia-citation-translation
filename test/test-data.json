@@ -73,5 +73,10 @@
     "i":15,
     "input": "{{ ynet |טל שחף|המציאות המדומה עולה על כל דימיון|digital/article/r1AIJ48pH|5 בדצמבר 2019}}",
     "expected": "{{Cite news|author=טל שחף|date=5 December 2019|language=he|title=המציאות המדומה עולה על כל דימיון|url=https://www.ynet.co.il/digital/article/r1AIJ48pH|website=[[Ynet]]}}"
+  },
+  {
+    "i":16,
+    "input": "{{סרוגים|צבי שיימן|מוכן לסיבוב הבא: אלי ישי הצליח לכסות את החובות של מפלגת יחד|121660-אלי-ישי-הצליח-לכסות-את-החובות-של-מפלגת-י|27 ביולי 2015}}",
+    "expected": "{{Cite news|author=צבי שיימן|date=27 July 2015|language=he|title=מוכן לסיבוב הבא: אלי ישי הצליח לכסות את החובות של מפלגת יחד|url=https://www.srugim.co.il/?p=121660-אלי-ישי-הצליח-לכסות-את-החובות-של-מפלגת-י|website=Srugim}}"
   }
 ]
