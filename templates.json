@@ -226,7 +226,12 @@
     "name": "ספורט1"
   },
   {
-    "name": "סרוגים"
+    "name": "סרוגים",
+    "pattern": "news",
+    "override": {
+      "url" : "https://www.srugim.co.il/?p=${3}",
+      "website" : "Srugim"
+    }
   },
   {
     "name": "עכבר העיר"
