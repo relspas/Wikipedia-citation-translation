@@ -24,15 +24,15 @@ export function translate(hebrewCitation) {
 
 function extractCitationContent(text) {
   const patterns = [
-    { regex: /^<ref>{{\s*([^|]+)\s*\|([\s\S]+?)}}<\/ref>$/, hasRefTags: true },
-    { regex: /^{{\s*הערה\s*\|(?:1=)?{{\s*([^|]+)\s*\|([\s\S]+?)}}}}$/, hasRefTags: true },
-    { regex: /^{{\s*([^|]+)\s*\|([\s\S]+?)}}$/, hasRefTags: false }
+    { regex: /^<ref>{{([^|]+)\|([\s\S]+?)}}<\/ref>$/, hasRefTags: true },
+    { regex: /^{{\s*הערה\s*\|(?:1=)?{{([^|]+)\|([\s\S]+?)}}}}$/, hasRefTags: true },
+    { regex: /^{{([^|]+)\|([\s\S]+?)}}$/, hasRefTags: false }
   ];
 
   for (const { regex, hasRefTags } of patterns) {
     const match = text.match(regex);
     if (match) {
-      return { templateType: match[1], content: match[2], hasRefTags };
+      return { templateType: match[1].trim(), content: match[2], hasRefTags };
     }
   }
 
