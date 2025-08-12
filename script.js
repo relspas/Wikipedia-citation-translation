@@ -195,23 +195,11 @@ window.convertCitation = function () {
   document.getElementById("copy-status").innerText = ""; // Clear copy status
 }
 
-function copyOutput() {
-  const outputText = document.getElementById("output").innerText;
-  const status = document.getElementById("copy-status");
+window.copyOutput = function() {
+  const outputElement = document.getElementById("output");
+  const textToCopy = outputElement.textContent;
 
-  navigator.clipboard.writeText(outputText).then(() => {
-    status.innerText = "Copied!";
-  }).catch(() => {
-    const textarea = document.createElement("textarea");
-    textarea.value = outputText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    try {
-      document.execCommand("copy");
-      status.innerText = "Copied using fallback!";
-    } catch (err) {
-      status.innerText = "Copy failed.";
-    }
-    document.body.removeChild(textarea);
-  });
-}
+  navigator.clipboard.writeText(textToCopy)
+    .then(() => console.log("Copied:", textToCopy))
+    .catch(err => console.error("Failed to copy:", err));
+};
